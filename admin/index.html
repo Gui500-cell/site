@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Painel Admin</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: #fff;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      background: #1c1c1c;
+      padding: 15px;
+      margin: 10px;
+      border-radius: 12px;
+      border-left: 5px solid #444;
+    }
+
+    .status {
+      font-weight: bold;
+    }
+
+    .recebido {
+      border-color: orange;
+    }
+
+    .producao {
+      border-color: blue;
+    }
+
+    .pronto {
+      border-color: green;
+    }
+
+    button {
+      margin: 5px;
+      padding: 8px 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn1 {
+      background: orange;
+    }
+
+    .btn2 {
+      background: blue;
+      color: #fff;
+    }
+
+    .btn3 {
+      background: green;
+      color: #fff;
+    }
+
+    .delete {
+      background: red;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🍰 Pedidos da Pâtisserie</h1>
+
+  <div id="lista"></div>
+
+  <script>
+
+    let pedidosAntigos = 0;
+
+    async function load() {
+      const res = await fetch("http://localhost:3000/pedidos");
+      const data = await res.json();
+
+      const div = document.getElementById("lista");
+
+      // alerta de novo pedido
+      if (data.length > pedidosAntigos) {
+        console.log("🆕 Novo pedido chegou!");
+      }
+      pedidosAntigos = data.length;
+
+      div.innerHTML = "";
+
+      data.reverse().forEach(p => {
+
+        let classe = "recebido";
+        if (p.status === "em produção") classe = "producao";
+        if (p.status === "pronto") classe = "pronto";
+
+        div.innerHTML += `
+      <div class="card ${classe}">
+        <h3>${p.nome}</h3>
+
+        <p>${p.tipo} - ${p.sabor}</p>
+
+        <p class="status">Status: ${p.status}</p>
+
+        <button class="btn1" onclick="status(${p.id},'recebido')">Recebido</button>
+        <button class="btn2" onclick="status(${p.id},'em produção')">Produção</button>
+        <button class="btn3" onclick="status(${p.id},'pronto')">Pronto</button>
+
+        <button class="delete" onclick="remover(${p.id})">Excluir</button>
+      </div>
+    `;
+      });
+    }
+
+    async function status(id, st) {
+      await fetch(`http://localhost:3000/pedidos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: st })
+      });
+
+      load();
+    }
+
+    /* NOVO: remover pedido */
+    async function remover(id) {
+      if (!confirm("Excluir pedido?")) return;
+
+      await fetch(`http://localhost:3000/pedidos/${id}`, {
+        method: "DELETE"
+      });
+
+      load();
+    }
+
+    load();
+    setInterval(load, 4000);
+
+  </script>
+
+</body>
+
+</html>

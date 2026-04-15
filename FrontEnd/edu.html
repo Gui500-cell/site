@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Edu Aguirre Pâtisserie</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #0b0f14;
+            --card: #121826;
+            --text: #eaeaea;
+            --muted: #b8b8b8;
+            --red: #b10f2e;
+            --blue: #1b3b6f;
+            --gold: #c9a227;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter;
+            background: linear-gradient(180deg, #070a0f, #0b0f14);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px;
+            background: #0a0d12;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--gold);
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* BOTÕES */
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--red), var(--blue));
+            color: white;
+            font-weight: 600;
+            transition: .3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+        }
+
+        /* HERO */
+        .hero {
+            padding: 80px 20px;
+            text-align: center;
+            background:
+                radial-gradient(circle at top, var(--blue), transparent 60%),
+                radial-gradient(circle at bottom, var(--red), transparent 60%);
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            color: var(--gold);
+        }
+
+        .hero p {
+            color: var(--muted);
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 60px 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--gold);
+            margin-bottom: 25px;
+        }
+
+        /* GRID */
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 18px;
+            width: 220px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, .06);
+            transition: .3s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* OGUM */
+        .ogum {
+            background: linear-gradient(135deg, rgba(177, 15, 46, .15), rgba(27, 59, 111, .15));
+        }
+
+        /* GALERIA (MELHORADA SEM REMOVER NADA) */
+        .gallery-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .gallery-controls button {
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            background: #1b1f2a;
+            color: white;
+            font-weight: 600;
+            transition: .3s;
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .gallery-controls button:hover {
+            background: linear-gradient(135deg, var(--red), var(--blue));
+            transform: scale(1.08);
+            box-shadow: 0 0 12px rgba(0, 0, 0, .5);
+        }
+
+        .gallery {
+            min-height: 180px;
+        }
+
+        .gallery img {
+            width: 220px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: .3s;
+            cursor: pointer;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.08);
+        }
+
+        /* PRICE */
+        .price {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 14px;
+            max-width: 300px;
+            margin: auto;
+        }
+
+        /* FEEDBACK */
+        .feedback-form {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .feedback-box {
+            background: var(--card);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 10px auto;
+            max-width: 500px;
+            border-left: 3px solid var(--gold);
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0;
+            border-radius: 8px;
+            border: none;
+            background: #0b0f14;
+            color: white;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #111827;
+            padding: 20px;
+            width: 90%;
+            max-width: 420px;
+            border-radius: 14px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+        }
+
+        /* FOOTER MELHORADO */
+        footer {
+            padding: 40px 20px;
+            color: var(--muted);
+            border-top: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        footer a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: .3s;
+        }
+
+        footer a:hover {
+            color: var(--gold);
+        }
+    </style>
+
+    <style>
+        .zoom {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .9);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .zoom-img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            transform: scale(0.9);
+            transition: 0.2s;
+        }
+
+        .zoom.show .zoom-img {
+            transform: scale(1);
+        }
+
+        :root {
+            --bg: #0b0f14;
+            --card: #121826;
+            --text: #eaeaea;
+            --muted: #b8b8b8;
+            --red: #b10f2e;
+            --blue: #1b3b6f;
+            --gold: #c9a227;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter;
+            background: linear-gradient(180deg, #070a0f, #0b0f14);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px;
+            background: #0a0d12;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--gold);
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--red), var(--blue));
+            color: white;
+            font-weight: 600;
+            transition: .3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+        }
+
+        .hero {
+            padding: 80px 20px;
+            text-align: center;
+            background:
+                radial-gradient(circle at top, var(--blue), transparent 60%),
+                radial-gradient(circle at bottom, var(--red), transparent 60%);
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            color: var(--gold);
+        }
+
+        .hero p {
+            color: var(--muted);
+        }
+
+        section {
+            padding: 60px 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--gold);
+            margin-bottom: 25px;
+        }
+
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 18px;
+            width: 220px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, .06);
+            transition: .3s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .ogum {
+            background: linear-gradient(135deg, rgba(177, 15, 46, .15), rgba(27, 59, 111, .15));
+        }
+
+        .gallery-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .gallery-controls button {
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            background: #1b1f2a;
+            color: white;
+            font-weight: 600;
+            transition: .3s;
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .gallery-controls button:hover {
+            background: linear-gradient(135deg, var(--red), var(--blue));
+            transform: scale(1.08);
+            box-shadow: 0 0 12px rgba(0, 0, 0, .5);
+        }
+
+        .gallery {
+            min-height: 180px;
+        }
+
+        .gallery img {
+            width: 220px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: .3s;
+            cursor: pointer;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.08);
+        }
+
+        .price {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 14px;
+            max-width: 300px;
+            margin: auto;
+        }
+
+        .feedback-form {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .feedback-box {
+            background: var(--card);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 10px auto;
+            max-width: 500px;
+            border-left: 3px solid var(--gold);
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0;
+            border-radius: 8px;
+            border: none;
+            background: #0b0f14;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #111827;
+            padding: 20px;
+            width: 90%;
+            max-width: 420px;
+            border-radius: 14px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+        }
+
+        footer {
+            padding: 40px 20px;
+            color: var(--muted);
+            border-top: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        footer a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: .3s;
+        }
+
+        footer a:hover {
+            color: var(--gold);
+        }
+
+        /* ✅ SÓ ISSO FOI ADICIONADO */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        header {
+            backdrop-filter: blur(8px);
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: 2px solid #c9a227;
+        }
+
+        .btn:active,
+        .gallery-controls button:active {
+            transform: scale(0.97);
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* SLIDER - GALERIA */
+        .slider-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slider-img {
+            width: 550px;
+            height: 550px;
+            object-fit: cover;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .slider-btn {
+            background: #1b1f2a;
+            border: none;
+            color: white;
+            font-size: 22px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">⚜ EDU AGUIRRE PÂTISSERIE</div>
+        <div class="header-buttons">
+            <button class="btn" onclick="openForm()">Fazer Pedido</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Bolos com arte, força e propósito</h1>
+        <p>Confeitaria especializada em aniversários, eventos e celebrações especiais.</p>
+    </section>
+
+    <div class="container">
+
+        <section>
+            <h2>Eventos atendidos</h2>
+            <div class="grid">
+                <div class="card">🎉 Aniversários</div>
+                <div class="card">💍 Casamentos</div>
+                <div class="card">🎓 Formaturas</div>
+                <div class="card">👶 Chá de bebê</div>
+            </div>
+        </section>
+
+        <section class="ogum">
+            <h2>Tradições atendidas</h2>
+            <div class="grid">
+                <div class="card">🕯️ Umbanda</div>
+                <div class="card">🔥 Quimbanda</div>
+                <div class="card">⚖️ Nação</div>
+                <div class="card">🌿 Candomblé</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Galeria</h2>
+
+            <div class="gallery-controls">
+                <button onclick="setGallery(0)">🍰 Religiosos</button>
+                <button onclick="setGallery(1)">🎉 Eventos</button>
+                <button onclick="setGallery(2)">🍬 Doces</button>
+            </div>
+
+            <div class="slider-container">
+
+                <button class="slider-btn" onclick="prevImg()">⬅</button>
+
+                <img id="sliderImg" class="slider-img" onclick="zoom(this.src)">
+
+                <button class="slider-btn" onclick="nextImg()">➡</button>
+
+            </div>
+        </section>
+
+        <section>
+            <h2>Catálogo de preços</h2>
+            <div class="price">
+                <p>🍰 Simples: R$ --</p>
+                <p>🎂 Personalizado: R$ --</p>
+                <p>👑 Premium: R$ --</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Feedback dos clientes</h2>
+
+            <div class="feedback-form">
+                <input id="nomeFeedback" placeholder="Seu nome">
+                <textarea id="msgFeedback" placeholder="Escreva seu feedback"></textarea>
+                <button class="btn" onclick="addFeedback()">Enviar feedback</button>
+            </div>
+
+            <div id="feedbackList"></div>
+        </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+
+        <div style="max-width:900px;margin:auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:30px;">
+
+            <div>
+                <h3 style="color:var(--gold)">Contato</h3>
+                <p>📞 <a href="https://wa.me/5551985307517" target="_blank">(51) 98530-7517</a></p>
+                <p>📧 <a href="mailto:seuemail@dominio.com">seuemail@dominio.com</a></p>
+            </div>
+
+            <div>
+                <h3 style="color:var(--gold)">Redes sociais</h3>
+                <p>📸 <a href="https://instagram.com/seu_instagram" target="_blank">@seu_instagram</a></p>
+            </div>
+
+            <div>
+                <h3 style="color:var(--gold)">Localização</h3>
+                <p>Canoas - RS</p>
+                <p>Atendimento sob encomenda</p>
+            </div>
+
+        </div>
+
+        <hr style="margin:30px 0;border:0;border-top:1px solid rgba(255,255,255,.08);">
+
+        <p style="text-align:center;">
+            Edu Aguirre Pâtisserie © Todos os direitos reservados
+        </p>
+
+    </footer>
+
+    <!-- ZOOM -->
+    <div id="zoom" class="zoom">
+        <img id="imgZoom" class="zoom-img">
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeForm()">✖</span>
+            <h2>Fazer pedido</h2>
+            <input id="nome" placeholder="Nome">
+            <input id="contato" placeholder="WhatsApp">
+            <input id="evento" placeholder="Evento">
+            <input id="sabor" placeholder="Bolo">
+            <textarea id="msg" placeholder="Detalhes"></textarea>
+            <button class="btn" onclick="send()">Enviar WhatsApp</button>
+        </div>
+    </div>
+
+    <script>
+
+        function zoom(src) {
+            const zoomBox = document.getElementById("zoom");
+            const imgZoom = document.getElementById("imgZoom");
+
+            imgZoom.src = src;
+            zoomBox.style.display = "flex";
+        }
+
+        function openForm() { modal.style.display = "flex"; }
+        function closeForm() { modal.style.display = "none"; }
+
+        function send() {
+            fetch("http://localhost:3000/pedidos", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    nome: nome.value,
+                    tipo: evento.value,
+                    sabor: sabor.value
+                })
+            });
+
+            const texto = `Pedido ${nome.value}`;
+            window.open(`https://wa.me/5551985307517?text=${texto}`);
+            closeForm();
+        }
+
+        const imagens = {
+            0: [
+                "/imagens/bolo1.png",
+                "/imagens/bolo2.png",
+                "/imagens/bolo3.png"
+            ],
+            1: [
+                "https://images.unsplash.com/photo-1551024601-bec78aea704b",
+                "https://images.unsplash.com/photo-1519869325930-281384150729"
+            ],
+            2: [
+                "https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b",
+                "https://images.unsplash.com/photo-1601979031925-424e53b6caaa"
+            ]
+        };
+        let atual = 0;
+        let index = 0;
+
+        function setGallery(type) {
+            atual = type;
+            index = 0;
+            document.getElementById("sliderImg").src = imagens[atual][index];
+        }
+
+        function nextImg() {
+            index++;
+            if (index >= imagens[atual].length) index = 0;
+            document.getElementById("sliderImg").src = imagens[atual][index];
+        }
+
+        function prevImg() {
+            index--;
+            if (index < 0) index = imagens[atual].length - 1;
+            document.getElementById("sliderImg").src = imagens[atual][index];
+        }
+
+        document.getElementById("zoom").onclick = function () {
+            this.style.display = "none";
+        };
+
+        function addFeedback() {
+            let data = JSON.parse(localStorage.getItem("feedbacks") || "[]");
+            data.push({ nome: nomeFeedback.value, msg: msgFeedback.value });
+            localStorage.setItem("feedbacks", JSON.stringify(data));
+            loadFeedback();
+        }
+
+        function loadFeedback() {
+            let data = JSON.parse(localStorage.getItem("feedbacks") || "[]");
+            feedbackList.innerHTML = data.map(f => `<div class="feedback-box"><b>${f.nome}</b><br>${f.msg}</div>`).join("");
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setGallery(0);
+            loadFeedback();
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>
