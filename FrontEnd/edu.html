@@ -689,6 +689,7 @@
             <input id="nome" placeholder="Nome">
             <input id="contato" placeholder="WhatsApp">
             <input id="evento" placeholder="Evento">
+            <input id="dataevento" type="date">
             <input id="sabor" placeholder="Bolo">
             <textarea id="msg" placeholder="Detalhes"></textarea>
             <button class="btn" onclick="send()">Enviar WhatsApp</button>
@@ -709,21 +710,50 @@
         function closeForm() { modal.style.display = "none"; }
 
         function send() {
+
+            const nomeVal = document.getElementById("nome").value;
+            const eventoVal = document.getElementById("evento").value;
+            const saborVal = document.getElementById("sabor").value;
+            const dataVal = document.getElementById("dataevento").value;
+
+            if (!dataVal) {
+                alert("Escolha uma data do evento");
+                return;
+            }
+
             fetch("http://localhost:3000/pedidos", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    nome: nome.value,
-                    tipo: evento.value,
-                    sabor: sabor.value
+                    nome: nomeVal,
+                    tipo: eventoVal,
+                    sabor: saborVal,
+                    dataevento: dataVal
                 })
-            });
+            })
+                .then(async (res) => {
 
-            const texto = `Pedido ${nome.value}`;
-            window.open(`https://wa.me/5551985307517?text=${texto}`);
-            closeForm();
+                    const data = await res.json();
+
+                    // 🔥 SE DER ERRO NO BACKEND
+                    if (!res.ok) {
+                        alert(data.erro || "Erro ao enviar pedido");
+                        return; // 👈 PARA AQUI
+                    }
+
+                    alert("Pedido enviado com sucesso!");
+
+                    const texto = `Pedido ${nomeVal}`;
+                    window.open(`https://wa.me/5551985307517?text=${texto}`);
+
+                    closeForm();
+                })
+                .catch(err => {
+                    alert("Erro de conexão com o servidor");
+                    console.log(err);
+                });
+
         }
-
         const imagens = {
             0: [
                 "/imagens/bolo1.png",

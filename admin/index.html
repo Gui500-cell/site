@@ -94,30 +94,50 @@
 
       div.innerHTML = "";
 
-      data.reverse().forEach(p => {
+      // 🔥 AGRUPAR POR DATA
+      const agenda = {};
 
-        let classe = "recebido";
-        if (p.status === "em produção") classe = "producao";
-        if (p.status === "pronto") classe = "pronto";
+      data.forEach(p => {
+        const dataEvento = p.dataevento ? p.dataevento.split("T")[0] : "Sem data";
 
-        div.innerHTML += `
-      <div class="card ${classe}">
-        <h3>${p.nome}</h3>
+        if (!agenda[dataEvento]) {
+          agenda[dataEvento] = [];
+        }
 
-        <p>${p.tipo} - ${p.sabor}</p>
+        agenda[dataEvento].push(p);
+      });
 
-        <p class="status">Status: ${p.status}</p>
+      // 🔥 ORDENAR DATAS
+      const datasOrdenadas = Object.keys(agenda).sort();
 
-        <button class="btn1" onclick="status(${p.id},'recebido')">Recebido</button>
-        <button class="btn2" onclick="status(${p.id},'em produção')">Produção</button>
-        <button class="btn3" onclick="status(${p.id},'pronto')">Pronto</button>
+      datasOrdenadas.forEach(data => {
+        div.innerHTML += `<h2>📅 ${data}</h2>`;
 
-        <button class="delete" onclick="remover(${p.id})">Excluir</button>
-      </div>
-    `;
+        agenda[data].forEach(p => {
+
+          let classe = "recebido";
+          if (p.status === "em produção") classe = "producao";
+          if (p.status === "pronto") classe = "pronto";
+
+          div.innerHTML += `
+        <div class="card ${classe}">
+          <h3>${p.nome}</h3>
+          <p>${p.tipo} - ${p.sabor}</p>
+          <p><b>Evento:</b> ${data}</p>
+          <p class="status">Status: ${p.status}</p>
+
+          <button class="btn1" onclick="status(${p.id},'recebido')">Recebido</button>
+          <button class="btn2" onclick="status(${p.id},'em produção')">Produção</button>
+          <button class="btn3" onclick="status(${p.id},'pronto')">Pronto</button>
+
+          <button class="delete" onclick="remover(${p.id})">Excluir</button>
+        </div>
+      `;
+        });
       });
     }
 
+    // UPDATE status
     async function status(id, st) {
       await fetch(`http://localhost:3000/pedidos/${id}`, {
         method: "PUT",
@@ -128,7 +148,7 @@
       load();
     }
 
-    /* NOVO: remover pedido */
+    // DELETE pedido
     async function remover(id) {
       if (!confirm("Excluir pedido?")) return;
 
@@ -139,11 +159,11 @@
       load();
     }
 
+    // iniciar
     load();
     setInterval(load, 4000);
 
   </script>
-
 </body>
 
 </html>
